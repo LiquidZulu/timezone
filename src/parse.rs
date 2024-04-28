@@ -121,13 +121,6 @@ pub fn parse_time(time: String) -> Option<(u32, u32)> {
                 }
             }
         },
-        None => {
-            println!(
-                "\n[{}] cannot parse time \"{}\". Please format the time as one of the following:\n\n\tSimpleAmPm    - eg. 1am, 10pm, etc.\n\tFullAmPm      - eg. 12:24am, 6:30pm, etc.\n\tMilitaryColon - eg. 07:00, 13:52, etc.\n\tMilitary      - eg. 0900, 1776, etc.\n",
-                "ERROR".red(),
-                time
-            );
-            None
-        }
+        None => None,
     }
 }
