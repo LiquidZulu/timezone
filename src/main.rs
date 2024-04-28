@@ -23,7 +23,7 @@ fn convert(
     month: Option<String>,
     year: Option<String>,
 ) {
-    let maybe_time = parse_time(time.clone());
+    let maybe_time = parse_time(time.clone().to_lowercase());
 
     if maybe_time == None {
         println!(
