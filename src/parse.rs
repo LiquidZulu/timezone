@@ -185,3 +185,61 @@ pub fn parse_day(maybe_day: Option<String>) -> Option<u32> {
         Err(_) => None,
     }
 }
+
+static MONTH_MAP: phf::Map<&'static str, u32> = phf::phf_map! {
+    "jan" => 1,
+    "january" => 1,
+    "feb" => 2,
+    "february" => 2,
+    "mar" => 3,
+    "march" => 3,
+    "apr" => 4,
+    "april" => 4,
+    "may" => 5,
+    "jun" => 6,
+    "june" => 6,
+    "jul" => 7,
+    "july" => 7,
+    "aug" => 8,
+    "august" => 8,
+    "sep" => 9,
+    "sept" => 9,
+    "september" => 9,
+    "oct" => 10,
+    "october" => 10,
+    "nov" => 11,
+    "november" => 11,
+    "dec" => 12,
+    "december" => 12,
+    "1" => 1,
+    "01" => 1,
+    "2" => 2,
+    "02" => 2,
+    "3" => 3,
+    "03" => 3,
+    "4" => 4,
+    "04" => 4,
+    "5" => 5,
+    "05" => 5,
+    "6" => 6,
+    "06" => 6,
+    "7" => 7,
+    "07" => 7,
+    "8" => 8,
+    "08" => 8,
+    "9" => 9,
+    "09" => 9,
+    "10" => 10,
+    "11" => 11,
+    "12" => 12,
+};
+
+pub fn parse_month(maybe_month: Option<String>) -> Option<u32> {
+    let today = chrono::Utc::today();
+
+    if maybe_month == None {
+        return parse_month(Some(today.month().to_string()));
+    }
+
+    return MONTH_MAP.get(&maybe_month.unwrap()).copied();
+}

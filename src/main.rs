@@ -73,6 +73,21 @@ fn convert(
 
     let day_n = maybe_day.unwrap();
 
+    let maybe_month = parse_month(month.clone());
+
+    if maybe_month == None {
+        println!(
+            "[{}] could not parse month {}",
+            "ERROR".red(),
+            month.unwrap()
+        );
+        return;
+    }
+
+    let month_n = maybe_month.unwrap();
+
+    println!("{month_n}");
+
     let alfa_time = TZ_MAP.get("a").unwrap().ymd(1990, 5, 6).and_hms(12, 30, 45);
     let utc_time = alfa_time.with_timezone(TZ_MAP.get("utc").unwrap());
 
