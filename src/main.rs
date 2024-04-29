@@ -1,5 +1,5 @@
-use chrono::{TimeZone, Utc};
-use chrono_tz::US::Pacific;
+use chrono::{Offset, TimeZone, Utc};
+use chrono_tz::Tz;
 use colored::*;
 use std::env;
 
@@ -41,6 +41,37 @@ fn convert(
     }
 
     let (hours, minutes) = maybe_time.unwrap();
+
+    let (maybe_origin_timezone, maybe_destination_timezone) =
+        parse_timezone(origin.clone(), destination.clone());
+
+    if maybe_origin_timezone == None {
+        println!("\n[{}] cannot parse origin {}", "ERROR".red(), origin);
+        return;
+    }
+
+    if maybe_destination_timezone == None {
+        println!(
+            "\n[{}] cannot parse destination {:?} and cannot get local timezone.",
+            "ERROR".red(),
+            destination
+        );
+        return;
+    }
+
+    let (origin_timezone, destinationtimezone) = (
+        maybe_origin_timezone.unwrap(),
+        maybe_destination_timezone.unwrap(),
+    );
+
+    let maybe_day = parse_day(day.clone());
+
+    if maybe_day == None {
+        println!("[{}] could not parse day {:?}", "ERROR".red(), day);
+        return;
+    }
+
+    let day_n = maybe_day.unwrap();
 
     let alfa_time = TZ_MAP.get("a").unwrap().ymd(1990, 5, 6).and_hms(12, 30, 45);
     let utc_time = alfa_time.with_timezone(TZ_MAP.get("utc").unwrap());

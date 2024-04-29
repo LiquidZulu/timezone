@@ -1,6 +1,9 @@
 use crate::Time;
 use crate::TimeFormat;
 use crate::TimeFormat::*;
+use crate::TZ_MAP;
+use chrono::{Datelike, Duration, NaiveDate, Offset, TimeZone};
+use chrono_tz::Tz;
 use colored::*;
 use regex::Regex;
 use std::num::ParseIntError;
@@ -122,5 +125,63 @@ pub fn parse_time(time: String) -> Option<(u32, u32)> {
             }
         },
         None => None,
+    }
+}
+
+pub fn parse_timezone(origin: String, destination: Option<String>) -> (Option<Tz>, Option<Tz>) {
+    (
+        TZ_MAP.get(&origin).copied(),
+        match destination {
+            Some(ref d) => TZ_MAP.get(&d).copied(),
+            None => {
+                let offset = chrono::Local
+                    .timestamp(0, 0)
+                    .offset()
+                    .fix()
+                    .local_minus_utc()
+                    / 60
+                    / 60;
+                let local = if offset < 0 {
+                    format!("utc-{offset}")
+                } else {
+                    format!("utc+{offset}")
+                };
+                println!(
+                    "\n[{}] cannot parse destination {:?}. Using local timezone = {local}.",
+                    "WARNING".yellow(),
+                    destination
+                );
+                TZ_MAP.get(&local).copied()
+            }
+        },
+    )
+}
+
+pub fn parse_day(maybe_day: Option<String>) -> Option<u32> {
+    if maybe_day == None {
+        return parse_day(Some("today".to_string()));
+    }
+
+    let day = maybe_day.unwrap().to_lowercase();
+    let today = chrono::Utc::today();
+
+    if day == "today" {
+        return Some(today.day());
+    }
+
+    if day == "yesterday" {
+        return Some((today - Duration::days(1)).day());
+    }
+
+    if day == "tomorrow" {
+        return Some((today + Duration::days(1)).day());
+    }
+
+    match day.parse::<u32>() {
+        Ok(n) => match NaiveDate::from_ymd_opt(today.year(), today.month(), n) {
+            Some(date) => Some(date.day()),
+            None => None,
+        },
+        Err(_) => None,
     }
 }
