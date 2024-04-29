@@ -1,4 +1,9 @@
 #+title: timezone (tz) - English Language Timezone Conversion
+#+OPTIONS: ^:nil toc:nil
+
+timezone (tz) - English Language Timezone Conversion
+
+#+toc: headlines 3
 
 * Installation
 ** Build from Source

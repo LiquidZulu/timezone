@@ -1,52 +1,50 @@
+timezone (tz) - English Language Timezone Conversion
+
 
 # Table of Contents
 
-1.  [Installation](#orgb1c8dae)
-    1.  [Build from Source](#orgd1c2f62)
-    2.  [crates.io](#org9229c1d)
-2.  [Usage](#orgfa96c82)
-    1.  [As a Library](#org1eb1e0f)
-    2.  [As a CLI](#orgc4e472f)
-        1.  [Arguments](#orgcb4fdfc)
-            1.  [`time`](#orga836325)
-            2.  [`origin_timezone` and `destination_timezone`](#org9a8adc3)
-            3.  [`day`, `month`, and `year`](#orgc74ca51)
-        2.  [Required Arguments](#orgd4a35a7)
+1.  [Installation](#orgba9af16)
+    1.  [Build from Source](#org1b2c114)
+    2.  [crates.io](#org0f6e1b5)
+2.  [Usage](#orgd322d81)
+    1.  [As a Library](#orgc30512a)
+    2.  [As a CLI](#org5f5989b)
+        1.  [Arguments](#org293ad34)
+        2.  [Required Arguments](#org9215a22)
 
 
-
-<a id="orgb1c8dae"></a>
+<a id="orgba9af16"></a>
 
 # Installation
 
 
-<a id="orgd1c2f62"></a>
+<a id="org1b2c114"></a>
 
 ## Build from Source
 
 The source code can be found at [this](https://github.com/LiquidZulu/timezone) GitHub repo. When the source has been obtained the easiest way to compile is with `cargo build --release`, then add `path/to/timezone/target/release` to your [PATH](https://en.wikipedia.org/wiki/PATH_(variable)). I do not know if this software compiles on Windows, if you have any problems with doing this [open an issue](https://github.com/LiquidZulu/timezone/issues).
 
 
-<a id="org9229c1d"></a>
+<a id="org0f6e1b5"></a>
 
 ## crates.io
 
 This software is distributed also at [crates.io](https://crates.io/crates/timezone), and should be able to be installed with `cargo install timezone`.
 
 
-<a id="orgfa96c82"></a>
+<a id="orgd322d81"></a>
 
 # Usage
 
 
-<a id="org1eb1e0f"></a>
+<a id="orgc30512a"></a>
 
 ## As a Library
 
 It should be possible to use this software in other rust programs with `cargo add timezone`. The majority of the actual conversion logic is handled by `chrono-tz`, but `src/parse.rs` provides several methods for parsing English-language inputs, which may be useful for you.
 
 
-<a id="orgc4e472f"></a>
+<a id="org5f5989b"></a>
 
 ## As a CLI
 
@@ -59,12 +57,10 @@ For example:
 will tell you what 1pm eastern US time is in British summer time tomorrow.
 
 
-<a id="orgcb4fdfc"></a>
+<a id="org293ad34"></a>
 
 ### Arguments
 
-
-<a id="orga836325"></a>
 
 #### `time`
 
@@ -112,21 +108,17 @@ will tell you what 1pm eastern US time is in British summer time tomorrow.
 </table>
 
 
-<a id="org9a8adc3"></a>
-
 #### `origin_timezone` and `destination_timezone`
 
-The timezones can be either a city, such as `Europe/London`, `America/Los_Angeles`, or even `US/Eastern`; or a timezone abbreviation, such as `gmt`, `est`, `aet`. A full list of available abbreviations can be found by consulting [src/convert<sub>timezones.rs</sub>](https://github.com/LiquidZulu/timezone/blob/main/src/convert_timezones.rs).
+The timezones can be either a city, such as `Europe/London`, `America/Los_Angeles`, or even `US/Eastern`; or a timezone abbreviation, such as `gmt`, `est`, `aet`. A full list of available abbreviations can be found by consulting [src/convert\_timezones.rs](https://github.com/LiquidZulu/timezone/blob/main/src/convert_timezones.rs).
 
-
-<a id="orgc74ca51"></a>
 
 #### `day`, `month`, and `year`
 
 `day`, `month`, and `year` are for the most part self-explanatory, but you can also specify `today`, `tomorrow` or `yesterday` for the `day`.
 
 
-<a id="orgd4a35a7"></a>
+<a id="org9215a22"></a>
 
 ### Required Arguments
 
