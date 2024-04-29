@@ -1,3 +1,5 @@
+use chrono::{TimeZone, Utc};
+use chrono_tz::US::Pacific;
 use colored::*;
 use std::env;
 
@@ -6,6 +8,9 @@ use parse::*;
 
 mod types;
 use types::*;
+
+mod convert_timezones;
+use convert_timezones::*;
 
 /*
  * 1pm EST                          - assumes EST -> your timezone
@@ -36,6 +41,11 @@ fn convert(
     }
 
     let (hours, minutes) = maybe_time.unwrap();
+
+    let alfa_time = TZ_MAP.get("a").unwrap().ymd(1990, 5, 6).and_hms(12, 30, 45);
+    let utc_time = alfa_time.with_timezone(TZ_MAP.get("utc").unwrap());
+
+    println!("alpha: {alfa_time}\nutc: {utc_time}")
 }
 
 fn main() {
