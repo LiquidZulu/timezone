@@ -59,7 +59,7 @@ fn convert(
         return;
     }
 
-    let (origin_timezone, destinationtimezone) = (
+    let (origin_timezone, destination_timezone) = (
         maybe_origin_timezone.unwrap(),
         maybe_destination_timezone.unwrap(),
     );
@@ -91,10 +91,12 @@ fn convert(
 
     let year_n = maybe_year.unwrap();
 
-    let alfa_time = TZ_MAP.get("a").unwrap().ymd(1990, 5, 6).and_hms(12, 30, 45);
-    let utc_time = alfa_time.with_timezone(TZ_MAP.get("utc").unwrap());
+    let origin_time = origin_timezone
+        .ymd(year_n, month_n, day_n)
+        .and_hms(hours, minutes, 0);
+    let destination_time = origin_time.with_timezone(&destination_timezone);
 
-    println!("alpha: {alfa_time}\nutc: {utc_time}")
+    println!("{} is {}", origin_time, destination_time.to_string().cyan());
 }
 
 fn main() {

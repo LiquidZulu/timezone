@@ -178,10 +178,12 @@ pub fn parse_day(maybe_day: Option<String>) -> Option<u32> {
     }
 
     match day.parse::<u32>() {
-        Ok(n) => match NaiveDate::from_ymd_opt(today.year(), today.month(), n) {
-            Some(date) => Some(date.day()),
-            None => None,
-        },
+        Ok(n) => {
+            match NaiveDate::from_ymd_opt(today.year(), today.month(), n.try_into().unwrap()) {
+                Some(date) => Some(date.day().try_into().unwrap()),
+                None => None,
+            }
+        }
         Err(_) => None,
     }
 }
@@ -242,9 +244,9 @@ pub fn parse_month(maybe_month: Option<String>) -> Option<u32> {
     return MONTH_MAP.get(&maybe_month.unwrap()).copied();
 }
 
-pub fn parse_year(maybe_year: Option<String>) -> Option<u32> {
+pub fn parse_year(maybe_year: Option<String>) -> Option<i32> {
     if maybe_year == None {
-        return parse_year(Some(chrono::Utc::today().month().to_string()));
+        return parse_year(Some(chrono::Utc::today().year().to_string()));
     }
 
     match maybe_year.unwrap().parse::<i32>() {
