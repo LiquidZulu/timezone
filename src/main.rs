@@ -177,6 +177,41 @@ fn output(
 fn main() {
     let args: Vec<String> = env::args().collect::<Vec<String>>()[1..].to_vec();
 
+    if args.len() == 0 {
+        println!(
+            "
+Timezone conversion on the command line.
+
+\tUsage: time origin_timezone destination_timezone day month year
+\tExample: 1pm et bst tomorrow
+\t  ↳ display what 1pm eastern time is in british summer time tomorrow.
+
+time should be in one of the following formats:
+
+\tSimpleAmPm    - eg. 1am, 10pm, etc.
+\tFullAmPm      - eg. 12:24am, 6:30pm, etc.
+\tMilitaryColon - eg. 07:00, 13:52, etc.
+\tMilitary      - eg. 0900, 1776, etc.
+
+The origin and destination timezones can be either a city,
+such as Europe/London, or a timezone abbreviation, such
+as gmt. A full list of accepted timezones is located at:
+
+https://github.com/LiquidZulu/timezone/blob/main/src/convert_timezones.rs
+
+The day, month, and year are all fairly self-explanatory,
+but you can also specify 'today', 'tomorrow' or 'yesterday'
+for the day.
+
+This software is robust, you do not have to fully-specify
+the conversion that you want to perform. At a minimum you
+can specify only the time and the origin, with the rest
+being assumed to be your local timezone, the current day,
+the current month, and the current year.\n"
+        );
+        return;
+    }
+
     // underspecified
     if args.len() < 2 {
         println!(
