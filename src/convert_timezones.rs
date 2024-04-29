@@ -20,10 +20,6 @@ use chrono_tz::{
 // so any conflicts will be decided by me by the standard
 // of which I consider to be more likely to be asked about
 
-// these limitations are not too big of a deal, because
-// TZ_MAP only exists as a fallback incase there is no
-// internet access to query an actual timezone database.
-
 pub static TZ_MAP: phf::Map<&'static str, Tz> = phf::phf_map! {
     "utc" => UTC,
     "utc+1" => GMTMinus1,
