@@ -1,0 +1,42 @@
+#+title: timezone (tz) - English Language Timezone Conversion
+
+* Installation
+** Build from Source
+The source code can be found at [[https://github.com/LiquidZulu/timezone][this]] GitHub repo. When the source has been obtained the easiest way to compile is with =cargo build --release=, then add =path/to/timezone/target/release= to your [[https://en.wikipedia.org/wiki/PATH_(variable)][PATH]]. I do not know if this software compiles on Windows, if you have any problems with doing this [[https://github.com/LiquidZulu/timezone/issues][open an issue]].
+
+** crates.io
+This software is distributed also at [[https://crates.io/crates/timezone][crates.io]], and should be able to be installed with =cargo install timezone=.
+
+* Usage
+** As a Library
+It should be possible to use this software in other rust programs with =cargo add timezone=. The majority of the actual conversion logic is handled by =chrono-tz=, but =src/parse.rs= provides several methods for parsing English-language inputs, which may be useful for you.
+** As a CLI
+#+begin_src shell
+tz time origin_timezone destination_timezone day month year
+#+end_src
+
+For example:
+#+begin_src shell
+tz 1pm et bst tomorrow
+#+end_src
+
+will tell you what 1pm eastern US time is in British summer time tomorrow.
+
+*** Arguments
+**** =time=
+=time= should be in one of the following formats:
+| Format        | Examples        |
+|---------------+-----------------|
+| SimpleAmPm    | 1am, 10pm       |
+| FullAmPm      | 12:24am, 6:30pm |
+| MilitaryColon | 07:00, 13:52    |
+| Military      | 0900, 1634      |
+
+**** =origin_timezone= and =destination_timezone=
+The timezones can be either a city, such as =Europe/London=, =America/Los_Angeles=, or even =US/Eastern=; or a timezone abbreviation, such as =gmt=, =est=, =aet=. A full list of available abbreviations can be found by consulting [[https://github.com/LiquidZulu/timezone/blob/main/src/convert_timezones.rs][src/convert_timezones.rs]].
+
+**** =day=, =month=, and =year=
+=day=, =month=, and =year= are for the most part self-explanatory, but you can also specify =today=, =tomorrow= or =yesterday= for the =day=.
+
+*** Required Arguments
+This software is robust, you do not have to fully-specify the conversion that you want to perform. At a minimum you can specify only the time and the origin, with the rest being assumed to be your local timezone, the current day, the current month, and the current year.

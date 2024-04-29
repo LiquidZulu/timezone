@@ -32,7 +32,7 @@ fn convert(
 
     if maybe_time == None {
         println!(
-            "\n[{}] cannot parse the time \"{}\". Please format the time as one of the following:\n\n\tSimpleAmPm    - eg. 1am, 10pm, etc.\n\tFullAmPm      - eg. 12:24am, 6:30pm, etc.\n\tMilitaryColon - eg. 07:00, 13:52, etc.\n\tMilitary      - eg. 0900, 1776, etc.\n\n[{}] this software is pretty good at working out which format you are using, make sure that if you specified am/pm that you are not using 24 hours and that you don't go over 59 minutes.",
+            "\n[{}] cannot parse the time \"{}\". Please format the time as one of the following:\n\n\tSimpleAmPm    - eg. 1am, 10pm, etc.\n\tFullAmPm      - eg. 12:24am, 6:30pm, etc.\n\tMilitaryColon - eg. 07:00, 13:52, etc.\n\tMilitary      - eg. 0900, 1634, etc.\n\n[{}] this software is pretty good at working out which format you are using, make sure that if you specified am/pm that you are not using 24 hours and that you don't go over 59 minutes.",
             "ERROR".red(),
             time,
             "HINT".cyan()
@@ -184,14 +184,14 @@ Timezone conversion on the command line.
 
 \tUsage: time origin_timezone destination_timezone day month year
 \tExample: 1pm et bst tomorrow
-\t  ↳ display what 1pm eastern time is in british summer time tomorrow.
+\t  ↳ display what 1pm eastern time is in British summer time tomorrow.
 
 time should be in one of the following formats:
 
 \tSimpleAmPm    - eg. 1am, 10pm, etc.
 \tFullAmPm      - eg. 12:24am, 6:30pm, etc.
 \tMilitaryColon - eg. 07:00, 13:52, etc.
-\tMilitary      - eg. 0900, 1776, etc.
+\tMilitary      - eg. 0900, 1634, etc.
 
 The origin and destination timezones can be either a city,
 such as Europe/London, or a timezone abbreviation, such
