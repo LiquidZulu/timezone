@@ -21,24 +21,24 @@ fn pm_offset(time: String) -> u32 {
 }
 
 pub fn get_time_format(time: String) -> Option<TimeFormat> {
-    let SimpleAmPmRegex: Regex = Regex::new(r"^(\d){1,2}(am|pm)$").unwrap();
-    let FullAmPmRegex: Regex = Regex::new(r"^(\d){1,2}\:(\d){2}(am|pm)$").unwrap();
-    let MilitaryColonRegex: Regex = Regex::new(r"^(\d){2}\:(\d){2}$").unwrap();
-    let MilitaryRegex: Regex = Regex::new(r"^(\d){4}$").unwrap();
+    let simple_am_pm_regex: Regex = Regex::new(r"^(\d){1,2}(am|pm)$").unwrap();
+    let full_am_pm_regex: Regex = Regex::new(r"^(\d){1,2}\:(\d){2}(am|pm)$").unwrap();
+    let military_colon_regex: Regex = Regex::new(r"^(\d){2}\:(\d){2}$").unwrap();
+    let military_regex: Regex = Regex::new(r"^(\d){4}$").unwrap();
 
-    if SimpleAmPmRegex.is_match(&time) {
+    if simple_am_pm_regex.is_match(&time) {
         return Some(SimpleAmPm);
     }
 
-    if FullAmPmRegex.is_match(&time) {
+    if full_am_pm_regex.is_match(&time) {
         return Some(FullAmPm);
     }
 
-    if MilitaryColonRegex.is_match(&time) {
+    if military_colon_regex.is_match(&time) {
         return Some(MilitaryColon);
     }
 
-    if MilitaryRegex.is_match(&time) {
+    if military_regex.is_match(&time) {
         return Some(Military);
     }
 
@@ -135,7 +135,8 @@ pub fn parse_timezone(origin: String, destination: Option<String>) -> (Option<Tz
             Some(ref d) => TZ_MAP.get(&d).copied(),
             None => {
                 let offset = chrono::Local
-                    .timestamp(0, 0)
+                    .timestamp_opt(0, 0)
+                    .unwrap()
                     .offset()
                     .fix()
                     .local_minus_utc()
@@ -163,7 +164,7 @@ pub fn parse_day(maybe_day: Option<String>) -> Option<u32> {
     }
 
     let day = maybe_day.unwrap().to_lowercase();
-    let today = chrono::Utc::today();
+    let today = chrono::Utc::now();
 
     if day == "today" {
         return Some(today.day());
@@ -238,7 +239,7 @@ static MONTH_MAP: phf::Map<&'static str, u32> = phf::phf_map! {
 
 pub fn parse_month(maybe_month: Option<String>) -> Option<u32> {
     if maybe_month == None {
-        return parse_month(Some(chrono::Utc::today().month().to_string()));
+        return parse_month(Some(chrono::Utc::now().month().to_string()));
     }
 
     return MONTH_MAP.get(&maybe_month.unwrap()).copied();
@@ -246,7 +247,7 @@ pub fn parse_month(maybe_month: Option<String>) -> Option<u32> {
 
 pub fn parse_year(maybe_year: Option<String>) -> Option<i32> {
     if maybe_year == None {
-        return parse_year(Some(chrono::Utc::today().year().to_string()));
+        return parse_year(Some(chrono::Utc::now().year().to_string()));
     }
 
     match maybe_year.unwrap().parse::<i32>() {

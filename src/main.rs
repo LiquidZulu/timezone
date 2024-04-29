@@ -1,5 +1,4 @@
-use chrono::{Offset, TimeZone, Utc};
-use chrono_tz::Tz;
+use chrono::TimeZone;
 use colored::*;
 use std::env;
 
@@ -92,8 +91,8 @@ fn convert(
     let year_n = maybe_year.unwrap();
 
     let origin_time = origin_timezone
-        .ymd(year_n, month_n, day_n)
-        .and_hms(hours, minutes, 0);
+        .with_ymd_and_hms(year_n, month_n, day_n, hours, minutes, 0)
+        .unwrap();
     let destination_time = origin_time.with_timezone(&destination_timezone);
 
     println!("{} is {}", origin_time, destination_time.to_string().cyan());

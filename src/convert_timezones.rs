@@ -5,7 +5,6 @@ use chrono_tz::{
     CST6CDT, EET, EST, EST5EDT, GB, HST, MET, MST, MST7MDT, NZ, NZCHAT, PRC, PST8PDT, ROC, ROK, US,
     WET, WSU,
 };
-use phf::*;
 
 // See: https://github.com/chronotope/chrono-tz/issues/16
 // for GMTPlus* vs GMTMinus*
