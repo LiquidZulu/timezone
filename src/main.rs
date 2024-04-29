@@ -1,4 +1,5 @@
-use chrono::TimeZone;
+use chrono::{DateTime, TimeZone, Timelike};
+use chrono_tz::Tz;
 use colored::*;
 use std::env;
 
@@ -95,7 +96,82 @@ fn convert(
         .unwrap();
     let destination_time = origin_time.with_timezone(&destination_timezone);
 
-    println!("{} is {}", origin_time, destination_time.to_string().cyan());
+    output(
+        time,
+        origin,
+        destination,
+        day,
+        month,
+        year,
+        origin_time,
+        destination_time,
+    )
+}
+
+fn output(
+    time: String,
+    origin: String,
+    destination: Option<String>,
+    day: Option<String>,
+    month: Option<String>,
+    year: Option<String>,
+    origin_time: DateTime<Tz>,
+    destination_time: DateTime<Tz>,
+) {
+    println!("\n");
+    match (time, origin, destination, day, month, year) {
+        (time, origin, Some(destination), Some(day), Some(month), Some(year)) => {
+            let (pm, hour) = destination_time.hour12();
+            println!(
+                "{time} {origin} {day} {month} {year} is {}:{:0>2}{} {destination}",
+                hour,
+                destination_time.minute(),
+                if pm { "pm" } else { "am" }
+            );
+        }
+        (time, origin, Some(destination), Some(day), Some(month), None) => {
+            let (pm, hour) = destination_time.hour12();
+            println!(
+                "{time} {origin} {day} {month} is {}:{:0>2}{} {destination}",
+                hour,
+                destination_time.minute(),
+                if pm { "pm" } else { "am" }
+            );
+        }
+        (time, origin, Some(destination), Some(day), None, None) => {
+            let (pm, hour) = destination_time.hour12();
+            println!(
+                "{time} {origin} {day} is {}:{:0>2}{} {destination}",
+                hour,
+                destination_time.minute(),
+                if pm { "pm" } else { "am" }
+            );
+        }
+        (time, origin, Some(destination), None, None, None) => {
+            let (pm, hour) = destination_time.hour12();
+            println!(
+                "{time} {origin} is {}:{:0>2}{} {destination}",
+                hour,
+                destination_time.minute(),
+                if pm { "pm" } else { "am" }
+            );
+        }
+        (time, origin, None, None, None, None) => {
+            let (pm, hour) = destination_time.hour12();
+            println!(
+                "{time} {origin} is {}:{:0>2}{} local time",
+                hour,
+                destination_time.minute(),
+                if pm { "pm" } else { "am" }
+            );
+        }
+
+        _ => {
+            println!("{} is {}", origin_time, destination_time.to_string().cyan())
+        }
+    };
+
+    println!("\n")
 }
 
 fn main() {
