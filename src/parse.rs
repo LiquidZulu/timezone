@@ -235,11 +235,23 @@ static MONTH_MAP: phf::Map<&'static str, u32> = phf::phf_map! {
 };
 
 pub fn parse_month(maybe_month: Option<String>) -> Option<u32> {
-    let today = chrono::Utc::today();
-
     if maybe_month == None {
-        return parse_month(Some(today.month().to_string()));
+        return parse_month(Some(chrono::Utc::today().month().to_string()));
     }
 
     return MONTH_MAP.get(&maybe_month.unwrap()).copied();
+}
+
+pub fn parse_year(maybe_year: Option<String>) -> Option<u32> {
+    if maybe_year == None {
+        return parse_year(Some(chrono::Utc::today().month().to_string()));
+    }
+
+    match maybe_year.unwrap().parse::<i32>() {
+        Ok(n) => match NaiveDate::from_ymd_opt(n, 1, 1) {
+            Some(date) => Some(date.year().try_into().unwrap()),
+            None => None,
+        },
+        Err(_) => None,
+    }
 }
